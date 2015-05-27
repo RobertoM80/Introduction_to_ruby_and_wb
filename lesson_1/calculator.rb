@@ -1,18 +1,25 @@
 require 'pry'
+def quit
+  puts "You chose to quit the calculator! why?? :("
+  abort 
+end
+
 def ask words
   puts "----------------------------------".center(45)
   puts words.center(45)
 end
 
-puts "Welcome to simple calculator!".center(45)
+puts "Welcome to simple calculator! type the numbers or q if you want to exit".center(45)
 
 def check_valid_input
   ask "Chose the first number for you calculation:"
   first_num = gets.chomp
+  quit if first_num == "q"
   if !first_num.include?(" ") && first_num =~ (/\A[+-]?\d+?(\.\d+)?\Z/) 
     def num2 first_num
       ask "Chose now the second number:"
       second_num = gets.chomp
+      quit if second_num == "q"
       if !second_num.include?(" ") && second_num =~ (/\A[+-]?\d+?(\.\d+)?\Z/)
         def operator(second_num, first_num)
           ask "Chose an operator:"
@@ -22,6 +29,7 @@ def check_valid_input
           puts "press 3 to divide #{first_num} and #{second_num}".center(45)
           puts "press 4 to multiply #{first_num} and #{second_num}".center(45)
           operator = gets.chomp
+          quit if operator == "q"
           puts ".....................................".center(45)
             if operator == "1"
               puts "#{first_num} plus #{second_num} = #{first_num.to_i + second_num.to_i}".center(45)
