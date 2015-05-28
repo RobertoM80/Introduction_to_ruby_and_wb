@@ -21,7 +21,6 @@ def winning_message choice
   end
 end
 
-
 puts "This is Paper, Rock, Scissor. Challenge the computer.."
 
 loop do
@@ -33,7 +32,6 @@ loop do
   computer_choice = CHOICES.keys.sample 
 
   puts "You chosed #{user_choice} and the computer #{computer_choice}."
-
 
   if (user_choice == "r" && computer_choice == "s") || (user_choice == "p" && computer_choice == "r") || (user_choice == "s" && computer_choice == "r")
     winning_message(user_choice)
