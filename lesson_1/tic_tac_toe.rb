@@ -45,8 +45,8 @@ end
 def choosed_if_two_in_a_row(board, winning_lines, choosed, mark)
   winning_lines.each do |arr|
     if board.values_at(*arr).count(mark) == 2 && 
-      board.values_at(*arr).include?(" ") && board[5] != " " && 
-      choosed == false
+       board.values_at(*arr).include?(" ") && board[5] != " " && 
+       choosed == false
       board[arr[0]] = "O" if board[arr[0]] == " "
       board[arr[1]] = "O" if board[arr[1]] == " "
       board[arr[2]] = "O" if board[arr[2]] == " "
