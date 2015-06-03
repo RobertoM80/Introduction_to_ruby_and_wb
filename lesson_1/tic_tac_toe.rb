@@ -1,8 +1,8 @@
 
 def initialize_board
-  b = {}
-  (1..9).each {|number| b[number] = " "}
-  b
+  board = {}
+  (1..9).each {|number| board[number] = " "}
+  board
 end
 
 def draw_board(board)
@@ -15,7 +15,7 @@ def draw_board(board)
 end
 
 def empty_squares(board)
-  board.select {|k, v| v == " "}.keys
+  board.select {|_, v| v == " "}.keys
 end
 
 def player_pick_square(board)
@@ -35,16 +35,18 @@ end
 
 def check_winner(board)
   winning_lines = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
-  winning_lines.each do |arr|
-    return "Player" if board.values_at(*arr).count("X") == 3
-    return "Computer" if board.values_at(*arr).count("O") == 3
+  winning_lines.each do |line|
+    return "Player" if board.values_at(*line).count("X") == 3
+    return "Computer" if board.values_at(*line).count("O") == 3
   end
   nil
 end   
 
-def choosed_if_two_in_a_row board, winning_lines, choosed, mark
+def choosed_if_two_in_a_row(board, winning_lines, choosed, mark)
   winning_lines.each do |arr|
-    if board.values_at(*arr).count(mark) == 2 && board.values_at(*arr).include?(" ") && board[5] != " " && choosed == false
+    if board.values_at(*arr).count(mark) == 2 && 
+      board.values_at(*arr).include?(" ") && board[5] != " " && 
+      choosed == false
       board[arr[0]] = "O" if board[arr[0]] == " "
       board[arr[1]] = "O" if board[arr[1]] == " "
       board[arr[2]] = "O" if board[arr[2]] == " "
@@ -53,12 +55,12 @@ def choosed_if_two_in_a_row board, winning_lines, choosed, mark
   end
 end
 
-def choosed_if_not_two_in_a_row board, choosed
+def choosed_if_not_two_in_a_row(board, choosed)
   if board[5] == " " && choosed == false
-     board[5] = "O"
+    board[5] = "O"
   else
-    computer_choice = board.select { |k, v| v == " " }.keys.sample
-     board[computer_choice] = "O"
+    computer_choice = board.select { |_, v| v == " " }.keys.sample
+    board[computer_choice] = "O"
   end
 end
 
@@ -66,9 +68,15 @@ def smart_computer board
   choosed = false
   winning_lines = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
   number_of_empty_squares = board.values.count(" ")
-  choosed_if_two_in_a_row board, winning_lines, choosed, "O" if board.values.count(" ") == number_of_empty_squares
-  choosed_if_two_in_a_row board, winning_lines, choosed, "X" if board.values.count(" ") == number_of_empty_squares
-  choosed_if_not_two_in_a_row board, choosed if board.values.count(" ") == number_of_empty_squares
+  if board.values.count(" ") == number_of_empty_squares
+    choosed_if_two_in_a_row(board, winning_lines, choosed, "O")
+  end 
+  if board.values.count(" ") == number_of_empty_squares
+    choosed_if_two_in_a_row(board, winning_lines, choosed, "X") 
+  end
+  if board.values.count(" ") == number_of_empty_squares
+    choosed_if_not_two_in_a_row(board, choosed)
+  end
 end
 
 board = initialize_board
