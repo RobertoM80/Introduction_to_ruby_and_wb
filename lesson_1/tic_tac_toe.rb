@@ -42,11 +42,10 @@ def check_winner(board)
   nil
 end   
 
-def choosed_if_two_in_a_row(board, winning_lines, choosed, mark)
+def choosed_if_two_in_a_row(board, winning_lines, mark)
   winning_lines.each do |arr|
     if board.values_at(*arr).count(mark) == 2 && 
-       board.values_at(*arr).include?(" ") && board[5] != " " && 
-       choosed == false
+       board.values_at(*arr).include?(" ") && board[5] != " "
       board[arr[0]] = "O" if board[arr[0]] == " "
       board[arr[1]] = "O" if board[arr[1]] == " "
       board[arr[2]] = "O" if board[arr[2]] == " "
@@ -55,8 +54,8 @@ def choosed_if_two_in_a_row(board, winning_lines, choosed, mark)
   end
 end
 
-def choosed_if_not_two_in_a_row(board, choosed)
-  if board[5] == " " && choosed == false
+def choosed_if_not_two_in_a_row(board)
+  if board[5] == " "
     board[5] = "O"
   else
     computer_choice = board.select { |_, v| v == " " }.keys.sample
@@ -65,17 +64,16 @@ def choosed_if_not_two_in_a_row(board, choosed)
 end
 
 def smart_computer board
-  choosed = false
   winning_lines = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
   number_of_empty_squares = board.values.count(" ")
   if board.values.count(" ") == number_of_empty_squares
-    choosed_if_two_in_a_row(board, winning_lines, choosed, "O")
+    choosed_if_two_in_a_row(board, winning_lines, "O")
   end 
   if board.values.count(" ") == number_of_empty_squares
-    choosed_if_two_in_a_row(board, winning_lines, choosed, "X") 
+    choosed_if_two_in_a_row(board, winning_lines, "X") 
   end
   if board.values.count(" ") == number_of_empty_squares
-    choosed_if_not_two_in_a_row(board, choosed)
+    choosed_if_not_two_in_a_row(board)
   end
 end
 
