@@ -1,5 +1,3 @@
-require 'pry'
-
 class Board
 
   WINNING_LINES = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
@@ -72,8 +70,6 @@ class Square
   end
 end
 
-
-
 class Player
   attr_reader :marker, :name
   def initialize(name, marker)
@@ -81,9 +77,6 @@ class Player
     @marker = marker
   end
 end
-
-
-
 
 class Game
   def initialize
@@ -142,10 +135,8 @@ class Game
   end
 end
 
-
 Game.new.play
-# board = Board.new
-# board.draw
+
 
 
 
