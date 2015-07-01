@@ -1,6 +1,7 @@
 class Board
-
+  attr_accessor :data
   WINNING_LINES = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
+  
 
   def initialize
     @data = {}
@@ -9,19 +10,24 @@ class Board
 
   def draw
     system 'clear'
-  puts
-  puts "     |     |"
-  puts "  #{@data[1]}  |  #{@data[2]}  |  #{@data[3]}"
-  puts "     |     |"
-  puts "-----+-----+-----"
-  puts "     |     |"
-  puts "  #{@data[4]}  |  #{@data[5]}  |  #{@data[6]}"
-  puts "     |     |"
-  puts "-----+-----+-----"
-  puts "     |     |"
-  puts "  #{@data[7]}  |  #{@data[8]}  |  #{@data[9]}"
-  puts "     |     |"
-  puts
+    puts
+    puts "     |     |"
+    puts "  #{@data[1]}  |  #{@data[2]}  |  #{@data[3]}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{@data[4]}  |  #{@data[5]}  |  #{@data[6]}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{@data[7]}  |  #{@data[8]}  |  #{@data[9]}"
+    puts "     |     |"
+    puts
+  end
+
+  def new
+    @data = {}
+    (1..9).each {|position| @data[position] = Square.new(" ")}
   end
 
   def all_squares_marked?
@@ -29,22 +35,22 @@ class Board
   end
 
   def empty_squares
-    @data.select {|_, square| square.value == " " }.values
+    data.select {|_, square| square.value == " " }.values
   end
 
   def empty_positions
-    @data.select {|_, square| square.empty? }.keys
+    data.select {|_, square| square.empty? }.keys
   end
 
   def mark_square(position, marker)
-    @data[position].value = marker
+    data[position].value = marker
   end
 
   def winning_condition?(marker)
     WINNING_LINES.each do |line|
-      return true if @data[line[0]].value == marker &&
-      @data[line[1]].value == marker &&
-      @data[line[2]].value == marker
+      return true if data[line[0]].value == marker &&
+      data[line[1]].value == marker &&
+      data[line[2]].value == marker
     end
     false
   end
@@ -58,30 +64,31 @@ class Square
   end
 
   def occupied?
-    @value != " "
+    value != " "
   end
 
   def empty?
-    @value == " "
+    value == " "
   end
 
   def to_s
-    @value
+    value
   end
 end
 
 class Player
-  attr_reader :marker, :name
+  attr_accessor :name
+  attr_reader :marker
   def initialize(name, marker)
     @name = name
     @marker = marker
   end
 end
 
-class Game
+class Game < Player
   def initialize
     @board = Board.new
-    @human = Player.new("Bob", "X")
+    @human = Player.new(" ", "X")
     @computer = Player.new("C3PO", "O")
     @current_player = @human
   end
@@ -110,32 +117,35 @@ class Game
     end
   end
 
-  def play
-    @board.draw
+  def play 
+    puts "Welcome, What is your name?"
+    @human.name = gets.chomp
     loop do
-      current_player_pick_square
+      @board.new
       @board.draw
-      if current_player_win?
-        puts "the winner is #{@current_player.name}."
-        break
-      elsif @board.all_squares_marked?
-        puts "It is a tie"
-        break
-      else
-        alternate_player
+      loop do
+        current_player_pick_square
+        @board.draw
+        if current_player_win?
+          puts "the winner is #{@current_player.name}."
+          break
+        elsif @board.all_squares_marked?
+          puts "It is a tie"
+          break
+        else
+          alternate_player
+        end
       end
-    end
-    while true
+     
       puts "Do you want to play again?"
       play_again = gets.chomp.downcase
       break if play_again != "y"
-      Game.new.play if play_again == "y"
     end
-    puts "Bye!"
+    puts "Bye! #{@human.name}"
   end
 end
 
-Game.new.play
+game = Game.new.play
 
 
 
