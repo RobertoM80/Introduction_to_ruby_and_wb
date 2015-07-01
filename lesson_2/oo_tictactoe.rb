@@ -12,15 +12,15 @@ class Board
     system 'clear'
     puts
     puts "     |     |"
-    puts "  #{@data[1]}  |  #{@data[2]}  |  #{@data[3]}"
+    puts "  #{data[1]}  |  #{data[2]}  |  #{data[3]}"
     puts "     |     |"
     puts "-----+-----+-----"
     puts "     |     |"
-    puts "  #{@data[4]}  |  #{@data[5]}  |  #{@data[6]}"
+    puts "  #{data[4]}  |  #{data[5]}  |  #{data[6]}"
     puts "     |     |"
     puts "-----+-----+-----"
     puts "     |     |"
-    puts "  #{@data[7]}  |  #{@data[8]}  |  #{@data[9]}"
+    puts "  #{data[7]}  |  #{data[8]}  |  #{data[9]}"
     puts "     |     |"
     puts
   end
@@ -139,9 +139,11 @@ class Game < Player
      
       puts "Do you want to play again?"
       play_again = gets.chomp.downcase
-      break if play_again != "y"
+      if !(play_again == "y")
+        break
+      end
     end
-    puts "Bye! #{@human.name}"
+    puts "Bye #{@human.name}!"
   end
 end
 
